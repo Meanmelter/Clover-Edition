@@ -1,22 +1,7 @@
-# AIDungeon2
-## Clover Edition
-### Pytorch Edition
-
-In 2016, Donald Trump ran for president on a campaign of Making Anime Real. Four years later this promise is finally being fullfilled. Behold AID2: Clover Edition. The only video game where you can truly Do Anything:
-
-![img](images/retro1.jpg)
-![img](images/retro2.jpg)
-![img](images/retro3.jpg)
-![img](https://i.4cdn.org/v/1576830028034.png)
-![img](https://i.4cdn.org/v/1576564400002.png)
-![img](http://i.imgur.com/NqC0lxG.png)
+## Clover Edition Modified
 
 Also take a look at [AIDungeonPastes](https://aidungeonpastes.github.io/AID2-Art/) for some drawn gameplay examples.
-
-
 A fork of AIDungeon2, now driven by huggingface's transformers repository using PyTorch GPT2.
-
-
 #### Features:
 ------------------------
 
@@ -115,52 +100,26 @@ python3 play.py
 
 ##### Color support on Windows:
 
-* Install a python package called `colorama` and it should work. This may already be installed by pip. Which I believe is installed automatically with python. Some users report this does not fix all of the color codes, especially on user input.
-* Install a windows program called "ansi.sys"
-* Use an alternative terminal emulator to the default **command prompt**.
-  * **Powershell** generally works better than the default terminal and is already installed with Windows. But it doesn't support color by default either.
-  * The new **Windows Terminal** supports color by default and is in beta. You currently have to install it from the windows store until it is officially released.
-  * An anon has reported that **ConEmu** works great.
-  * There are a number of other terminal emulators for windows, I think one even comes with git for windows.
-* Windows 10 users can edit a registry key (look up `Registry Editor`) at `HKEY_CURRENT_USER\Console\VirtualTerminalLevel` to `1` to permanently enable color support
-* Try using the Windows Subsystem for Linux.
-* use a bat program to enable the `ENABLE_VIRTUAL_TERMINAL_PROCESSING` flag via the `SetConsoleMode` API (not sure what the exact .bat command would be), then run the python script. (If someone figures this out I can put it in the repo and windows users can just run it without doing anything.)
-
+• You can enable Prompt Toolkit to use a built-in Python CLI
+•  Install a python package called `colorama` and it should work. This may already be installed by pip. Which I believe is installed automatically with python. Some users report this does not fix all of the color codes, especially on user input.
+•  Install a windows program called "ansi.sys"
+•  Use an alternative terminal emulator to the default **command prompt**.
+  •  **Powershell** generally works better than the default terminal and is already installed with Windows. But it doesn't support color by default either.
+  •  The new **Windows Terminal** supports color by default and is in beta. You currently have to install it from the windows store until it is officially released.
+  •  An anon has reported that **ConEmu** works great.
+  •  There are a number of other terminal emulators for windows, I think one even comes with git for windows.
 
 ##### Troubleshooting for Linux
 * If pip commands fail because of an unsupported default Python version, try it with
 `supported_Python_version -m pip install -r requirements.txt` where `supported_Python_version` is replaced with a supported Python version (they might be 3.5 to 3.7.6 but don't quote me on that).
 
-#### Datasets and Finetuning the AI
----------------
-
-I threw together a quick page of some tips [here](DATASETS.md). I plan to throw any links to interesting datasets or guides for training and finetuing the AI there. Please send me anything interesting.
-
-Fine tunning is not currently a push button thing and requires some minimal technical ability. Most people are using the program gpt-simple. You may have more luck with the much more advanced [Huggingface-Transformers](https://github.com/huggingface/transformers) program that we use to power Clover-Edition. [This](https://huggingface.co/transformers/examples.html#language-model-fine-tuning) seems to be their documentation on fine-tuning.
-
-Anon says: "Here's an ipynb you can train new models with using the transformers lib that clover edition uses directly, rather than having to convert it: https://0x0.st/zDRC.ipynb "
-
-
-
 #### Converting Tensorflow model to Pytorch
 ----------------
-
 I have made the [convert_gpt2_model.py](convert_gpt2_model.py) script an idiot proof simple way of quickly converting tensorflow models to pytorch models. Just run it on the folder containing a tensorflow model and you will get a pytorch model. You can use the --full flag to get a full 32bit model, but do try 16bit models as they will be potentially half the size for the same accuracy.
 
 See the [test-models.py](test-models.py) script to test the accuracy of 16 bit mode if you doubt the chad 16BIT models. My tests were well within expectations.
-
-#### Community
-------------------------
-
-See that github issues page? Post any questions, requests, or problems there if you are willing to create a github account. Unless MicroAndSoft deletes us.
-Otherwise see:
-
-* **Website**: [4chan Discussion](https://boards.4chan.org/search#/aidungeon%20OR%20%22ai%20dungeon%22)
-* **Email**: cloveranon@nuke.africa
-
 
 #### Contributing
 ------------------------
 Contributions are more than welcome. You can fork the thing and send a  [pull request](https://help.github.com/articles/using-pull-requests/) from your fork. Or you can possibly just edit the files from the github page if it lets you. If not fork the thing and try to edit your fork and submit it back.
 
-![cry.](https://i.4cdn.org/vg/1577854915134.png)
