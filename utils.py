@@ -253,7 +253,7 @@ def input_number(max_choice, default=0):
         default = max_choice
     bell()
     print()
-    val = input_line(f"Enter a number from above (default {default}):", "selection-prompt")
+    val = input_line("Enter a number from above (default {default}):", "selection-prompt")
     if not val:
         return default
     elif not re.match("^\d+$", val) or 0 > int(val) or int(val) > max_choice:

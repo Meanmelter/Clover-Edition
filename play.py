@@ -2,9 +2,6 @@ import traceback
 from pathlib import Path
 from datetime import datetime
 
-# remove this in a few days
-with open(Path('interface', 'start-message.txt'), 'r') as file_:
-    print('\x1B[7m' + file_.read() + '\x1B[27m')
 import gc
 import torch
 
@@ -16,12 +13,20 @@ from interface import instructions
 
 # add color for windows users that install colorama
 #   It is not necessary to install colorama on most systems
-try:
-    import colorama
+if not use_ptoolkit():
+    try:
+        import colorama
+        output("ASNI Terminal Enabled")
+        import ctypes
+        kernel32 = ctypes.windll.kernel32
+        kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+        colorama.init()
+    except ModuleNotFoundError:
+        pass
 
-    colorama.init()
-except ModuleNotFoundError:
-    pass
+# remove this in a few days
+with open(Path('interface', 'start-message.txt'), 'r') as file_:
+    print('\x1B[7m' + file_.read() + '\x1B[27m')
 
 logger.info("Colab detected: {}".format(in_colab()))
 
