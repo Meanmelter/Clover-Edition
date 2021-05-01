@@ -11,19 +11,18 @@ from utils import *
 from gpt2generator import GPT2Generator
 from interface import instructions
 
-# add color for windows users that install colorama
-#   It is not necessary to install colorama on most systems
-if not use_ptoolkit():
+if not use_ptoolkit() and os.name == 'nt':
     try:
         import colorama
-        output("ASNI Terminal Enabled")
         import ctypes
         kernel32 = ctypes.windll.kernel32
         kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
         colorama.init()
-    except ModuleNotFoundError:
+        output("INFO: ANSI escape sequence enabled")
+    except ModuleNotFoundError: #No colorama
+        output("INFO: ColorAMA is not installed")
         pass
-
+        
 # remove this in a few days
 with open(Path('interface', 'start-message.txt'), 'r') as file_:
     print('\x1B[7m' + file_.read() + '\x1B[27m')
