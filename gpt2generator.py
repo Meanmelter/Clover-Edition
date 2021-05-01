@@ -46,15 +46,20 @@ def memory_merge(prompt, context, tokenizer, maxHistory=1024):
     # the tokenizer is kind of broken for the first input, especially if it includes white space. Same with any trailing white space on the last output.
     # I'm going with the add prefix option but I'm not sure it's quite right
     prompt_tokens = tokenizer.encode(prompt, add_special_tokens=False, add_prefix_space=True)
-    context_tokens = hackyEncode(tokenizer, hackyWhiteSpaceCutter(prompt) + context)
-    context_tokens = context_tokens[-(maxHistory - len(prompt_tokens)):]
-    # logger.debug('DECODED CONTEXT TOKENS: `%r`', tokenizer.convert_ids_to_tokens(context_tokens))
-    prompt_tokens.extend(context_tokens)
-    context_tokens = prompt_tokens
-    # logger.debug('DECODED OUTPUT IS: `%r`', tokenizer.decode(context_tokens, clean_up_tokenization_spaces=False))
-    # this is a hack and it should be up to the sampler to deal with max size
-    if len(context_tokens) > maxHistory:
-        logger.error("CONTEXT IS TOO LONG ERROR")
+    if len(prompt_tokens) >= maxHistory:
+        logger.debug("Clamping the amount of prompt tokens.")
+        context_tokens = prompt_tokens[-maxHistory:]
+    else:
+        context_tokens = hackyEncode(tokenizer, hackyWhiteSpaceCutter(prompt) + context)
+        context_tokens = context_tokens[-(maxHistory - len(prompt_tokens)):]
+        # logger.debug('DECODED CONTEXT TOKENS: `%r`', tokenizer.convert_ids_to_tokens(context_tokens))
+        prompt_tokens.extend(context_tokens)
+        context_tokens = prompt_tokens
+        # logger.debug('DECODED OUTPUT IS: `%r`', tokenizer.decode(context_tokens, clean_up_tokenization_spaces=False))
+        # this is a hack and it should be up to the sampler to deal with max size
+        if len(context_tokens) > maxHistory:
+            logger.error("CONTEXT IS TOO LONG ERROR")
+            context_tokens = context_tokens[-maxHistory:]
     return context_tokens
 
 
