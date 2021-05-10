@@ -12,20 +12,11 @@ from gpt2generator import GPT2Generator
 from interface import instructions
 
 if not use_ptoolkit() and os.name == 'nt':
-    try:
-        import colorama
         import ctypes
         kernel32 = ctypes.windll.kernel32
         kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
-        colorama.init()
         output("INFO: ANSI escape sequence enabled")
-    except ModuleNotFoundError: #No colorama
-        output("INFO: ColorAMA is not installed")
-        pass
-        
-# remove this in a few days
-with open(Path('interface', 'start-message.txt'), 'r') as file_:
-    print('\x1B[7m' + file_.read() + '\x1B[27m')
+    
 
 logger.info("Colab detected: {}".format(in_colab()))
 
@@ -72,6 +63,8 @@ def get_generator():
                 top_k=settings.getint("top-keks"),
                 top_p=settings.getfloat("top-p"),
                 repetition_penalty=settings.getfloat("rep-pen"),
+                repetition_penalty_range=settings.getint("rep-pen-range"),
+                repetition_penalty_slope=settings.getfloat("rep-pen-slope"),
             )
             break
         except OSError:
@@ -560,6 +553,31 @@ class GameManager:
             else:
                 output("Please enter something valid to remember. ", "error")
 
+        elif command == "memalt":
+            while True:
+                output("Select a memory to alter: ", "menu")
+                list_items(self.story.memory + ["(Finish)"], "menu")
+                i = input_number(len(self.story.memory), default=-1)
+                if i == len(self.story.memory):
+                    break
+                else:
+                    self.story.memory[i] = alter_text(self.story.memory[i])
+                    if self.story.memory[i] == 0:
+                        del self.story.memory[i]
+
+        elif command == "memswap":
+            while True:
+                output("Select two memories to swap: ", "menu")
+                list_items(self.story.memory + ["(Finish)"], "menu")
+                i = input_number(len(self.story.memory), default=-1)
+                if i == len(self.story.memory):
+                    break
+                j = input_number(len(self.story.memory), default=-1)
+                if j == len(self.story.memory):
+                    break
+                else:
+                    self.story.memory[i], self.story.memory[j] = self.story.memory[j], self.story.memory[i]
+
         elif command == "forget":
             while True:
                 output("Select a memory to forget: ", "menu")
@@ -655,7 +673,7 @@ class GameManager:
                 if action in [str(i) for i in range(len(suggested_actions))]:
                     action = "You " + suggested_actions[int(action)].strip()
 
-            if user_speech_regex:
+            elif user_speech_regex:
                 action = user_speech_regex.group(1)
                 if settings.getboolean("action-d20"):
                     action = d20ify_speech(action, d)
