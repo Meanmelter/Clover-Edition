@@ -21,6 +21,8 @@ def instructions():
     print('  "/altergen"              Edit the last result from the AI and have it generate the rest')
     print('  "/context"               Edit the story\'s permanent context paragraph')
     print('  "/remember [SENTENCE]"   Commits something permanently to the AI\'s memory')
+    print('  "/memalt"                Let you select and alter a memory entry')
+    print('  "/memswap"               Swaps places of two memory entries')
     print('  "/forget"                Opens a menu allowing you to remove permanent memories')
     print('  "/save"                  Saves your game to a file in the game\'s save directory')
     print('  "/load"                  Loads a game from a file in the game\'s save directory')
